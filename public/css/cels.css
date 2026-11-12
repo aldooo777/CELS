@@ -1,0 +1,223 @@
+/* =========================================================
+   CELS — tema dari desain Stitch "CELS - Landing Page Resmi"
+   Dipakai di seluruh halaman (guest, admin, kampus, mahasiswa)
+   ========================================================= */
+:root {
+    --cels-topbar: #0B1F3A;
+    --cels-navbar: #0A7C87;          /* tosca */
+    --cels-accent-stripe: #F28C28;   /* oranye */
+    --cels-primary: #0F2747;         /* navy */
+    --cels-secondary: #1B4B7A;
+    --cels-hover: #8FE0E8;
+    --cels-cta-bg: #F28C28;
+    --cels-cta-text: #0F2747;
+    --cels-badge-soon-bg: #E3E8ED;
+    --cels-badge-soon-text: #4A5563;
+    --cels-bg-main: #FFF;
+    --cels-bg-alt: #E8F1F5;
+    --cels-text-body: #3B4654;
+    --cels-border: #dce5ec;
+    --cels-border-radius: 8px;
+
+    /* Warna "primary" Bootstrap disamakan dengan tosca CELS */
+    --bs-primary: #0A7C87;
+    --bs-primary-rgb: 10, 124, 135;
+    --bs-link-color: #0A7C87;
+    --bs-link-color-rgb: 10, 124, 135;
+    --bs-link-hover-color: #08646d;
+    --bs-link-hover-color-rgb: 8, 100, 109;
+    --bs-body-font-family: "Poppins", sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+    font-family: "Poppins", sans-serif;
+    color: var(--cels-text-body);
+    background-color: #f5f8fa;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+body.page-landing { background-color: var(--cels-bg-main); }
+main { flex: 1; }
+
+h1, h2, h3, h4, h5, h6 { color: var(--cels-primary); font-weight: 600; letter-spacing: -0.01em; }
+.pre-line { white-space: pre-line; }
+
+/* ---------- Tombol ---------- */
+.btn-primary {
+    --bs-btn-bg: #0A7C87; --bs-btn-border-color: #0A7C87;
+    --bs-btn-hover-bg: #08646d; --bs-btn-hover-border-color: #08646d;
+    --bs-btn-active-bg: #075860; --bs-btn-active-border-color: #075860;
+    --bs-btn-disabled-bg: #0A7C87; --bs-btn-disabled-border-color: #0A7C87;
+}
+.btn-outline-primary {
+    --bs-btn-color: #0A7C87; --bs-btn-border-color: #0A7C87;
+    --bs-btn-hover-bg: #0A7C87; --bs-btn-hover-border-color: #0A7C87;
+    --bs-btn-active-bg: #08646d; --bs-btn-active-border-color: #08646d;
+}
+.nav-pills { --bs-nav-pills-link-active-bg: #0A7C87; --bs-nav-link-color: #0A7C87; }
+.page-link { --bs-pagination-color: #0A7C87; --bs-pagination-active-bg: #0A7C87; --bs-pagination-active-border-color: #0A7C87; }
+
+.btn-cels-cta {
+    background-color: var(--cels-cta-bg);
+    color: var(--cels-cta-text) !important;
+    font-weight: 600;
+    border: 1px solid var(--cels-cta-bg);
+    border-radius: 6px;
+    padding: .55rem 1.35rem;
+    transition: all .2s ease-in-out;
+}
+.btn-cels-cta:hover {
+    background-color: #e07f20; border-color: #e07f20; color: #07172b !important;
+    box-shadow: 0 4px 10px rgba(242, 140, 40, .35);
+}
+.btn-cels-outline-light {
+    background-color: transparent; color: #fff !important; font-weight: 500;
+    border: 1.5px solid #fff; border-radius: 6px; padding: .55rem 1.35rem; transition: all .2s ease;
+}
+.btn-cels-outline-light:hover { background-color: rgba(255, 255, 255, .15); color: #fff !important; }
+.btn-cels-secondary {
+    background-color: var(--cels-secondary); color: #fff !important; font-weight: 500;
+    border-radius: 6px; padding: .45rem 1.15rem; transition: all .2s ease;
+}
+.btn-cels-secondary:hover { background-color: #143759; color: #fff !important; }
+
+/* ---------- Navbar dua lapis (sticky) ---------- */
+.sticky-nav-wrapper { position: sticky; top: 0; z-index: 1050; box-shadow: 0 4px 15px rgba(0, 0, 0, .1); }
+.nav-topbar { background-color: var(--cels-topbar); font-size: .825rem; padding: .35rem 0; color: #cbd5e1; }
+.nav-topbar a { color: #cbd5e1; text-decoration: none; }
+.nav-topbar a:hover { color: #fff; }
+.nav-topbar a.btn-login, .nav-topbar button.btn-login {
+    color: #fff; background-color: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .25); border-radius: 4px;
+    padding: .15rem .85rem; font-size: .8rem; text-decoration: none; transition: all .2s ease;
+}
+.nav-topbar a.btn-login:hover, .nav-topbar button.btn-login:hover { background-color: rgba(255, 255, 255, .25); color: #fff; }
+.nav-main { background-color: var(--cels-navbar); border-bottom: 3.5px solid var(--cels-accent-stripe); padding: .5rem 0; }
+.nav-main .navbar-brand { color: #fff; font-weight: 700; font-size: 1.5rem; letter-spacing: .5px; line-height: 1.1; display: flex; flex-direction: column; }
+.nav-main .navbar-brand .brand-tagline { font-size: .7rem; font-weight: 400; color: #d1f2f5; letter-spacing: .2px; }
+.nav-main .brand-badge { font-size: .65rem; font-weight: 700; color: #0A7C87 !important; }
+.nav-main .nav-link { color: #fff !important; font-weight: 500; font-size: .92rem; padding: .4rem .75rem !important; transition: color .15s ease-in-out; }
+.nav-main .nav-link:hover, .nav-main .nav-link.active { color: var(--cels-hover) !important; }
+.nav-main .navbar-toggler { border: 1px solid rgba(255, 255, 255, .4); padding: .35rem .6rem; }
+.nav-main .navbar-toggler-icon { filter: invert(1); }
+
+/* ---------- Badge ---------- */
+.badge-cels-primary, .badge-cels-secondary {
+    color: #fff; font-weight: 500; font-size: .75rem; padding: .35rem .65rem; border-radius: 4px;
+}
+.badge-cels-primary { background-color: var(--cels-primary); }
+.badge-cels-secondary { background-color: var(--cels-secondary); }
+.badge-cels-soon {
+    background-color: var(--cels-badge-soon-bg); color: var(--cels-badge-soon-text);
+    font-weight: 600; font-size: .7rem; padding: .3rem .6rem; border-radius: 4px; border: 1px solid #cbd5e1;
+}
+
+/* ---------- Kartu (dipakai juga di dashboard) ---------- */
+.card {
+    border: 1px solid var(--cels-border);
+    border-radius: var(--cels-border-radius);
+    box-shadow: 0 2px 6px rgba(15, 39, 71, .05);
+}
+.card-cels { background-color: #fff; border: 1px solid var(--cels-border); border-radius: var(--cels-border-radius); box-shadow: 0 2px 6px rgba(15, 39, 71, .05); transition: all .25s ease-in-out; }
+.card-top-tosca { border-top: 4px solid var(--cels-navbar) !important; }
+.feature-card { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.feature-card:hover { border-color: var(--cels-accent-stripe) !important; transform: translateY(-3px); box-shadow: 0 8px 18px rgba(15, 39, 71, .08); }
+
+/* Kartu statistik di dashboard admin/kampus */
+.stat-card { border-top: 4px solid var(--cels-navbar) !important; }
+.stat-card .display-6 { font-weight: 700; color: var(--cels-primary); }
+
+/* Judul halaman (halaman dalam) */
+.page-header { background: var(--cels-bg-alt); border-bottom: 1px solid var(--cels-border); }
+
+/* Timeline status pendaftaran */
+.status-step { flex: 1; text-align: center; position: relative; }
+.status-step .dot { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #dee2e6; color: #6c757d; }
+.status-step.done .dot { background: var(--cels-navbar); color: #fff; }
+.status-step.rejected .dot { background: #dc3545; color: #fff; }
+
+/* ---------- Landing page ---------- */
+.page-landing section { padding: 4.5rem 0; }
+.section-alt { background-color: var(--cels-bg-alt); }
+.section-heading { text-align: center; margin-bottom: 2.75rem; }
+.section-heading h2 { font-size: 2rem; margin-bottom: .5rem; }
+.section-heading p { font-size: 1.05rem; max-width: 680px; margin: 0 auto; }
+
+.hero-section {
+    position: relative;
+    background: radial-gradient(circle at 20% 20%, rgba(10, 124, 135, .45), transparent 55%),
+                radial-gradient(circle at 85% 80%, rgba(242, 140, 40, .18), transparent 50%),
+                var(--cels-primary);
+    padding: 5.5rem 0 7rem !important;
+    color: #fff;
+    overflow: hidden;
+}
+.hero-content { position: relative; z-index: 2; }
+.hero-tagline { color: #FFC085; font-size: .95rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; display: inline-block; }
+.hero-title { font-size: 2.75rem; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 1.25rem; }
+.hero-subtitle { font-size: 1.2rem; color: #e2e8f0; max-width: 720px; margin: 0 auto 2rem; font-weight: 300; }
+@media (max-width: 576px) { .hero-title { font-size: 2rem; } }
+
+.stat-cards-wrapper { margin-top: -3.5rem; position: relative; z-index: 3; }
+.landing-stat {
+    border-top: 4px solid var(--cels-navbar) !important; background: #fff; border-radius: var(--cels-border-radius);
+    padding: 1.5rem 1rem; box-shadow: 0 4px 14px rgba(15, 39, 71, .08); border: 1px solid var(--cels-border);
+    text-align: center; height: 100%;
+}
+.landing-stat .stat-number { font-size: 1.85rem; font-weight: 700; color: var(--cels-primary); line-height: 1.2; margin-bottom: .25rem; }
+.landing-stat .stat-label { font-size: .85rem; font-weight: 500; color: #556274; text-transform: uppercase; letter-spacing: .5px; }
+
+.step-item { position: relative; text-align: center; padding: 1rem; }
+.step-circle {
+    width: 58px; height: 58px; border-radius: 50%; background-color: var(--cels-navbar); color: #fff;
+    font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem; box-shadow: 0 3px 8px rgba(10, 124, 135, .3); position: relative; z-index: 2;
+}
+.step-connector { display: none; }
+@media (min-width: 768px) {
+    .step-connector { display: block; position: absolute; top: 38px; left: 50%; width: 100%; height: 2px; border-top: 2px dashed var(--cels-accent-stripe); z-index: 1; }
+    .step-item:last-child .step-connector { display: none; }
+}
+
+.table-comparison { border: 1px solid var(--cels-border); border-radius: var(--cels-border-radius); overflow: hidden; box-shadow: 0 2px 10px rgba(15, 39, 71, .05); }
+.table-comparison thead th { background-color: var(--cels-primary); color: #fff; font-weight: 600; padding: 1.15rem 1rem; font-size: .95rem; border: none; vertical-align: middle; }
+.table-comparison th.cels-head { background-color: #0b2240; border-top: 3px solid var(--cels-accent-stripe); }
+.table-comparison tbody td { padding: 1.1rem 1rem; vertical-align: middle; border-color: #e2e8f0; font-size: .92rem; }
+.table-comparison tbody td.col-cels { background-color: var(--cels-bg-alt); font-weight: 600; color: var(--cels-primary); }
+
+.pricing-card { border-radius: var(--cels-border-radius); background: #fff; padding: 2.25rem 2rem; border: 1px solid var(--cels-border); box-shadow: 0 3px 10px rgba(15, 39, 71, .06); height: 100%; display: flex; flex-direction: column; position: relative; }
+.pricing-card.featured { border: 2px solid var(--cels-accent-stripe); box-shadow: 0 6px 20px rgba(242, 140, 40, .15); }
+.pricing-badge { position: absolute; top: -12px; right: 24px; background-color: var(--cels-accent-stripe); color: var(--cels-primary); font-size: .75rem; font-weight: 700; padding: .25rem .85rem; border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; }
+
+.partner-logo-box { background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 1.25rem 1rem; text-align: center; filter: grayscale(100%); opacity: .8; transition: all .25s ease; font-size: .85rem; font-weight: 500; color: #64748b; }
+.partner-logo-box:hover { filter: grayscale(0%); opacity: 1; border-color: var(--cels-navbar); color: var(--cels-navbar); background: #f7fafc; transform: translateY(-2px); }
+
+.testimonial-card { border-radius: var(--cels-border-radius); border: 1px solid var(--cels-border); background: #fff; padding: 1.75rem; box-shadow: 0 2px 8px rgba(15, 39, 71, .04); height: 100%; }
+
+.news-card { border-radius: var(--cels-border-radius); overflow: hidden; border: 1px solid var(--cels-border); background: #fff; box-shadow: 0 2px 8px rgba(15, 39, 71, .04); height: 100%; display: flex; flex-direction: column; }
+.news-thumb { height: 190px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(255, 255, 255, .9); background: linear-gradient(135deg, var(--cels-primary), var(--cels-navbar)); }
+.news-card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+.accordion-cels .accordion-item { border: 1px solid var(--cels-border); border-radius: var(--cels-border-radius) !important; margin-bottom: .85rem; overflow: hidden; }
+.accordion-cels .accordion-button { font-weight: 600; color: var(--cels-primary); padding: 1.15rem 1.25rem; background-color: #fff; box-shadow: none; }
+.accordion-cels .accordion-button:not(.collapsed) { background-color: var(--cels-bg-alt); color: var(--cels-navbar); border-left: 4px solid var(--cels-navbar); }
+.accordion-cels .accordion-button:focus { border-color: var(--cels-navbar); box-shadow: none; }
+.accordion-cels .accordion-body { color: var(--cels-text-body); font-size: .95rem; line-height: 1.65; padding: 1.25rem; background-color: #fff; }
+
+.contact-form-card { background: #fff; border: 1px solid var(--cels-border); border-radius: var(--cels-border-radius); padding: 2rem; box-shadow: 0 4px 14px rgba(15, 39, 71, .06); }
+
+/* ---------- Form ---------- */
+.form-control, .form-select { border: 1px solid #cbd5e1; border-radius: 6px; padding: .6rem .85rem; font-size: .92rem; }
+.form-control:focus, .form-select:focus { border-color: var(--cels-navbar); box-shadow: 0 0 0 .2rem rgba(10, 124, 135, .15); }
+.form-check-input:checked { background-color: var(--cels-navbar); border-color: var(--cels-navbar); }
+
+/* ---------- Footer ---------- */
+footer.cels-footer { background-color: var(--cels-primary); color: #e2e8f0; padding: 4.5rem 0 1.5rem; }
+footer.cels-footer.compact { padding: 1.25rem 0; }
+footer.cels-footer h5 { color: #fff; font-size: 1.05rem; margin-bottom: 1.25rem; font-weight: 600; }
+footer.cels-footer a { color: #cbd5e1; text-decoration: none; transition: color .15s ease; font-size: .9rem; }
+footer.cels-footer a:hover { color: var(--cels-hover); }
+.footer-divider-orange { border-top: 1.5px solid var(--cels-accent-stripe); opacity: .85; margin: 2.5rem 0 1.5rem; }
