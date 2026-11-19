@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Daftarkan Kampus')
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+@endpush
 @section('content')
 <div class="row justify-content-center">
     <div class="col-lg-8">
@@ -9,15 +12,21 @@
 
             <form method="POST" action="{{ route('campus-registration.store') }}" enctype="multipart/form-data">@csrf
                 <h6 class="text-uppercase text-muted small mt-3">1. Kampus</h6>
-                <div class="mb-3">
-                    <select name="campus_id" id="campus_id" class="form-select" required>
-                        <option value="">— Pilih kampus dari daftar PTN —</option>
-                        @foreach ($campuses as $c)
-                            <option value="{{ $c->id }}" @selected(old('campus_id') == $c->id)>{{ $c->name }}{{ $c->city ? ' — '.$c->city : '' }}</option>
-                        @endforeach
-                        <option value="lainnya" @selected(old('campus_id') === 'lainnya')>Kampus tidak ada di daftar</option>
-                    </select>
-                </div>
+                <div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label class="form-label">Jenis kampus</label>
+        <select name="campus_type" id="campus_type" class="form-select" required>
+            <option value="">— Pilih jenis —</option>
+            <option value="PTN" @selected(old('campus_type') === 'PTN')>PTN (Negeri)</option>
+            <option value="PTS" @selected(old('campus_type') === 'PTS')>PTS (Swasta)</option>
+        </select>
+    </div>
+    <div class="col-md-8">
+        <label class="form-label">Nama kampus</label>
+        <select name="campus_id" id="campus_id" required></select>
+        <div class="form-text">Ketik nama atau kota kampus untuk mencari.</div>
+    </div>
+</div>
                 <div id="new-campus" class="row g-3 mb-3" style="display:none">
                     <div class="col-md-8">
                         <label class="form-label">Nama kampus</label>
@@ -40,9 +49,15 @@
                         <input name="pic_position" value="{{ old('pic_position') }}" class="form-control" placeholder="mis. Kepala Unit PDLK" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">No. telepon / WhatsApp</label>
-                        <input name="pic_phone" value="{{ old('pic_phone') }}" class="form-control" required>
-                    </div>
+    <label class="form-label">No. telepon / WhatsApp</label>
+    <input type="tel" name="pic_phone" id="pic_phone" value="{{ old('pic_phone') }}"
+           class="form-control @error('pic_phone') is-invalid @enderror"
+           inputmode="tel" maxlength="16" placeholder="081234567890"
+           pattern="(\+62|62|0)8[0-9]{8,11}"
+           title="Nomor HP Indonesia, contoh: 081234567890" required>
+    <div class="form-text">Nomor HP aktif yang terhubung ke WhatsApp. Contoh: 081234567890</div>
+    @error('pic_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+</div>
                     <div class="col-md-6">
                         <label class="form-label">Email institusi</label>
                         <input type="email" name="institution_email" value="{{ old('institution_email') }}" class="form-control" placeholder="pdlk@kampus.ac.id" required>
@@ -70,9 +85,61 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+@php
+    // Ubah data kampus menjadi daftar untuk JavaScript
+    $campusOptions = $campuses->map(fn ($c) => [
+        'value' => (string) $c->id,
+        'text'  => $c->name.($c->city ? ' — '.$c->city : ''),
+        'type'  => $c->type,
+    ])->values();
+@endphp
 <script>
-    const sel = document.getElementById('campus_id'), box = document.getElementById('new-campus');
-    const toggle = () => box.style.display = sel.value === 'lainnya' ? 'flex' : 'none';
-    sel.addEventListener('change', toggle); toggle();
+    const allCampuses = @json($campusOptions);
+    const otherOption = { value: 'lainnya', text: 'Kampus tidak ada di daftar', type: 'semua' };
+    const typeSelect  = document.getElementById('campus_type');
+    const newCampus   = document.getElementById('new-campus');
+
+    // Dropdown nama kampus yang bisa diketik untuk mencari
+    const campusSelect = new TomSelect('#campus_id', {
+        placeholder: 'Pilih jenis kampus dulu',
+        maxOptions: 1000,
+        onChange: toggleNewCampus,
+    });
+
+    // Isi dropdown hanya dengan kampus sesuai jenis (PTN / PTS)
+    function loadCampuses(type, selected = '') {
+        campusSelect.clear(true);
+        campusSelect.clearOptions();
+
+        if (!type) {
+            campusSelect.settings.placeholder = 'Pilih jenis kampus dulu';
+            campusSelect.inputState();
+            campusSelect.disable();
+            toggleNewCampus();
+            return;
+        }
+
+        allCampuses.filter(c => c.type === type).forEach(c => campusSelect.addOption(c));
+        campusSelect.addOption(otherOption);
+        campusSelect.settings.placeholder = 'Ketik untuk mencari ' + type + '...';
+        campusSelect.inputState();
+        campusSelect.enable();
+        if (selected) campusSelect.setValue(selected, true);
+        toggleNewCampus();
+    }
+
+    // Tampilkan isian kampus baru jika memilih "Kampus tidak ada di daftar"
+    function toggleNewCampus() {
+        newCampus.style.display = campusSelect.getValue() === 'lainnya' ? 'flex' : 'none';
+    }
+
+    typeSelect.addEventListener('change', () => loadCampuses(typeSelect.value));
+    loadCampuses(typeSelect.value, @json(old('campus_id', '')));
+
+    // Nomor telepon: hanya angka, dan tanda + di depan
+    document.getElementById('pic_phone').addEventListener('input', function () {
+        this.value = this.value.replace(/(?!^\+)[^\d]/g, '');
+    });
 </script>
 @endpush

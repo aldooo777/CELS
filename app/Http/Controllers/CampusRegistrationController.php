@@ -26,25 +26,32 @@ class CampusRegistrationController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+                $data = $request->validate([
+            'campus_type'       => ['required', Rule::in(['PTN', 'PTS'])],
             'campus_id'         => ['required'],   // id kampus atau "lainnya"
             'new_campus_name'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:255'],
             'new_campus_city'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:100'],
             'pic_name'          => ['required', 'string', 'max:255'],
             'pic_position'      => ['required', 'string', 'max:255'],
-            'pic_phone'         => ['required', 'string', 'max:30'],
+            'pic_phone'         => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,11}$/'],
             'institution_email' => ['required', 'email', 'max:255', 'unique:users,email', 'regex:/\.ac\.id$/i'],
             'document'          => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
             'password'          => ['required', 'confirmed', Password::min(8)],
         ], [
-            'institution_email.regex'   => 'Gunakan email institusi yang berakhiran .ac.id.',
+            'institution_email.regex'     => 'Gunakan email institusi yang berakhiran .ac.id.',
             'new_campus_name.required_if' => 'Isi nama kampus jika kampus tidak ada di daftar.',
             'new_campus_city.required_if' => 'Isi kota kampus jika kampus tidak ada di daftar.',
+            'pic_phone.regex'             => 'Nomor telepon harus nomor HP Indonesia, contoh: 081234567890.',   // (b)
         ]);
+
+        // (c) Samakan format nomor: +628... / 628... menjadi 08...
+        $data['pic_phone'] = preg_replace('/^(\+62|62)/', '0', $data['pic_phone']);
 
         if ($data['campus_id'] !== 'lainnya') {
             $request->validate([
-                'campus_id' => [Rule::exists('campuses', 'id')->whereIn('status', ['belum_terdaftar', 'nonaktif'])],
+                'campus_id' => [Rule::exists('campuses', 'id')
+                    ->where('type', $data['campus_type'])
+                    ->whereIn('status', ['belum_terdaftar', 'nonaktif'])],
             ], ['campus_id.exists' => 'Kampus ini sudah terdaftar atau sedang diverifikasi.']);
         }
 
@@ -54,7 +61,7 @@ class CampusRegistrationController extends Controller
                 $campus = Campus::create([
                     'name'      => $data['new_campus_name'],
                     'city'      => $data['new_campus_city'],
-                    'type'      => 'Lainnya',
+                    'type'      => $data['campus_type'],
                     'is_listed' => false,
                     'status'    => 'menunggu',
                 ]);

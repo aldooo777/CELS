@@ -8,8 +8,8 @@
         ['Kampus uji coba', $trialCount, 'stopwatch', 'info', route('admin.campuses.index', ['status' => 'uji_coba'])],
         ['Kampus berlangganan', $subscribedCount, 'patch-check', 'success', route('admin.campuses.index', ['status' => 'berlangganan'])],
         ['Permintaan demo baru', $demoCount, 'envelope-paper', 'warning', route('admin.demo-requests.index')],
-        ['Mahasiswa', $studentCount, 'people', 'primary', null],
-        ['Program', $programCount, 'briefcase', 'primary', null],
+        ['Mahasiswa', $studentCount, 'people', 'primary', route('admin.students.index')],
+        ['Program', $programCount, 'briefcase', 'primary', route('admin.programs.index')],
     ] as [$label, $value, $icon, $color, $link])
         <div class="col-md-4 col-lg-2">
             <div class="card stat-card h-100"><div class="card-body">

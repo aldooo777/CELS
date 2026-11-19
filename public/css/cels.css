@@ -221,3 +221,13 @@ footer.cels-footer h5 { color: #fff; font-size: 1.05rem; margin-bottom: 1.25rem;
 footer.cels-footer a { color: #cbd5e1; text-decoration: none; transition: color .15s ease; font-size: .9rem; }
 footer.cels-footer a:hover { color: var(--cels-hover); }
 .footer-divider-orange { border-top: 1.5px solid var(--cels-accent-stripe); opacity: .85; margin: 2.5rem 0 1.5rem; }
+
+/* Logo CELS */
+.brand-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;      /* bentuk lingkaran */
+    background: #fff;        /* latar putih agar garis bola dunia tetap terlihat */
+    object-fit: cover;
+    padding: 2px;
+}

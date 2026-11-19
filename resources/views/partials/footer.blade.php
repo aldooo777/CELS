@@ -3,6 +3,7 @@
         <div class="row g-4 justify-content-between">
             <div class="col-lg-4 col-md-6">
                 <div class="d-flex align-items-center mb-2">
+                    <img src="{{ asset('images/cels-logo.png') }}" alt="Logo CELS" class="brand-logo me-2">
                     <span class="fw-bold fs-3 text-white me-2">CELS</span>
                     <span class="badge bg-white py-1 px-2" style="font-size:.65rem;font-weight:700;color:#0A7C87!important;">SaaS</span>
                 </div>

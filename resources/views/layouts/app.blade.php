@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Beranda') · CELS - {{ config('cels.longname') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/cels-logo.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -44,13 +45,16 @@
     {{-- Lapis utama: logo + menu --}}
     <nav class="navbar navbar-expand-lg nav-main">
         <div class="container">
-            <a class="navbar-brand text-decoration-none" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
-                <div class="d-flex align-items-center">
-                    <span class="me-2 fw-bold text-white fs-3">CELS</span>
-                    <span class="badge bg-white py-1 px-2 brand-badge">SaaS</span>
-                </div>
-                <span class="brand-tagline">{{ config('cels.tagline') }}</span>
-            </a>
+            <a class="navbar-brand text-decoration-none d-flex flex-row align-items-center gap-2" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
+    <img src="{{ asset('images/cels-logo.png') }}" alt="Logo CELS" class="brand-logo">
+    <div>
+        <div class="d-flex align-items-center">
+            <span class="me-2 fw-bold text-white fs-3">CELS</span>
+            <span class="badge bg-white py-1 px-2 brand-badge">SaaS</span>
+        </div>
+        <span class="brand-tagline d-block">{{ config('cels.tagline') }}</span>
+    </div>
+</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#celsNavbarNav"
                     aria-controls="celsNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

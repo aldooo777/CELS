@@ -67,6 +67,10 @@ Route::middleware(['auth', 'role:admin_cels'])->prefix('admin')->name('admin.')-
     Route::get('/permintaan-demo', [Admin\DemoRequestController::class, 'index'])->name('demo-requests.index');
     Route::patch('/permintaan-demo/{demoRequest}', [Admin\DemoRequestController::class, 'toggle'])->name('demo-requests.toggle');
 
+    Route::get('/mahasiswa', [Admin\StudentController::class, 'index'])->name('students.index');
+    Route::get('/mahasiswa/{student}', [Admin\StudentController::class, 'show'])->name('students.show');
+    Route::get('/program', [Admin\ProgramController::class, 'index'])->name('programs.index');
+    Route::get('/program/{program}', [Admin\ProgramController::class, 'show'])->name('programs.show');
     Route::get('/kampus', [Admin\CampusController::class, 'index'])->name('campuses.index');
     Route::patch('/kampus/{campus}/langganan', [Admin\CampusController::class, 'updateSubscription'])->name('campuses.subscription');
 });
