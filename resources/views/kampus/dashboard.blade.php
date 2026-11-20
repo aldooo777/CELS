@@ -17,7 +17,8 @@
         ['Program dibuka', $openCount, 'door-open', route('kampus.programs.index')],
         ['Pendaftar baru', $newCount, 'inbox', null],
         ['Disetujui', $approvedCount, 'check2-circle', null],
-        ['Mahasiswa belum terverifikasi', $unverifiedCount, 'person-exclamation', route('kampus.students.index')],
+        ['Mahasiswa terverifikasi', $verifiedCount, 'person-check', route('kampus.students.index', ['filter' => 'sudah'])],
+        ['Mahasiswa belum terverifikasi', $unverifiedCount, 'person-exclamation', route('kampus.students.index', ['filter' => 'belum'])],
     ] as [$label, $value, $icon, $link])
         <div class="col-6 col-lg">
             <div class="card stat-card h-100"><div class="card-body">

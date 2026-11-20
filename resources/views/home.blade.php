@@ -57,6 +57,53 @@
         </div>
     </div>
 
+{{-- PROGRAM TERBARU (dari semua kampus) --}}
+<section id="program">
+    <div class="container">
+        <div class="section-heading">
+            <span class="badge-cels-primary mb-2 d-inline-block">Kesempatan PDLK</span>
+            <h2>Program terbaru dari kampus di CELS</h2>
+            <p>Magang, kerja praktik, riset, dan kegiatan lain yang sedang dibuka oleh kampus yang sudah bergabung.</p>
+        </div>
+
+        @php($viewer = auth()->user())
+        <div class="row g-4">
+            @forelse ($programs as $p)
+                <div class="col-md-6 col-lg-4">
+                    <div class="card card-cels feature-card h-100">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge-cels-secondary">{{ $p->typeLabel() }}</span>
+                                <small class="text-muted"><i class="bi bi-people me-1"></i>Kuota {{ $p->quota }}</small>
+                            </div>
+                            <h5 class="fs-6 fw-bold mb-1">{{ $p->title }}</h5>
+                            <p class="small mb-2" style="color: var(--cels-navbar);">
+                                <i class="bi bi-building me-1"></i>{{ $p->campus->name }}
+                            </p>
+                            <p class="small text-muted flex-grow-1">{{ \Illuminate\Support\Str::limit($p->description, 110) }}</p>
+                            <p class="small mb-3"><i class="bi bi-calendar-event me-1"></i>Deadline {{ $p->deadline->translatedFormat('d M Y') }}</p>
+
+                            @if (! $viewer)
+                                <a href="{{ route('login') }}" class="btn btn-cels-cta btn-sm w-100">Masuk untuk mendaftar</a>
+                            @elseif ($viewer->isMahasiswa() && $viewer->campus_id === $p->campus_id)
+                                <a href="{{ route('mahasiswa.programs.show', $p) }}" class="btn btn-cels-cta btn-sm w-100">Lihat &amp; daftar</a>
+                            @else
+                                <span class="btn btn-outline-secondary btn-sm w-100 disabled">Khusus mahasiswa {{ $p->campus->short_name ?? $p->campus->name }}</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="text-center text-muted py-4 border rounded bg-white">
+                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>Belum ada program yang sedang dibuka.
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
     {{-- 2. MASALAH --}}
     <section class="section-alt mt-4" id="masalah">
         <div class="container">

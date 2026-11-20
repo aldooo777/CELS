@@ -80,7 +80,7 @@
                         @endif
                     @else
                         @php($home = request()->routeIs('home') ? '' : route('home'))
-                        @foreach (['beranda' => 'Beranda', 'masalah' => 'Masalah', 'fitur' => 'Fitur', 'cara-kerja' => 'Cara Kerja', 'paket' => 'Paket', 'kabar' => 'Kabar', 'faq' => 'FAQ', 'kontak' => 'Kontak'] as $anchor => $label)
+                        @foreach (['beranda' => 'Beranda', 'program' => 'Program', 'masalah' => 'Masalah', 'fitur' => 'Fitur', 'cara-kerja' => 'Cara Kerja', 'paket' => 'Paket', 'kabar' => 'Kabar', 'faq' => 'FAQ', 'kontak' => 'Kontak'] as $anchor => $label)
                             <li class="nav-item"><a class="nav-link" href="{{ $home }}#{{ $anchor }}">{{ $label }}</a></li>
                         @endforeach
                         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">

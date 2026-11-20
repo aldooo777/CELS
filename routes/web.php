@@ -42,12 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-    // Verifikasi email (nama route mengikuti bawaan Laravel)
-    Route::get('/email/verifikasi', [VerificationController::class, 'notice'])->name('verification.notice');
-    Route::get('/email/verifikasi/{id}/{hash}', [VerificationController::class, 'verify'])
-        ->middleware('signed')->name('verification.verify');
-    Route::post('/email/verifikasi/kirim-ulang', [VerificationController::class, 'send'])
-        ->middleware('throttle:6,1')->name('verification.send');
+    // Halaman tunggu: mahasiswa menunggu diverifikasi admin kampus
+    Route::get('/menunggu-verifikasi', [VerificationController::class, 'notice'])->name('verification.notice');
 });
 
 /*

@@ -21,6 +21,7 @@ class DashboardController extends Controller
             'newCount'       => (clone $applications)->where('status', Application::STATUS_DIAJUKAN)->count(),
             'approvedCount'  => (clone $applications)->where('status', Application::STATUS_DISETUJUI)->count(),
             'unverifiedCount'=> $campus->students()->whereNull('email_verified_at')->count(),
+            'verifiedCount'  => $campus->students()->whereNotNull('email_verified_at')->count(),
             'latest'         => (clone $applications)->with('program', 'student')->latest()->take(8)->get(),
         ]);
     }

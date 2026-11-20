@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Campus;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -42,11 +41,10 @@ class StudentRegisterController extends Controller
             'role'      => User::ROLE_MAHASISWA,
         ]);
 
-        // Mengirim email verifikasi (bawaan Laravel)
-        event(new Registered($user));
-
+                // Tidak ada email verifikasi: akun menunggu diverifikasi admin kampus
         Auth::login($user);
 
-        return redirect()->route('verification.notice');
+        return redirect()->route('verification.notice')
+            ->with('success', 'Registrasi berhasil. Akun Anda sedang menunggu verifikasi admin kampus.');
     }
 }
