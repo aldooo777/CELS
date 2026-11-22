@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Kampus;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Program;
+use App\Rules\MeaningfulText;
+use App\Rules\ProgramTitle;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -89,16 +91,16 @@ class ProgramController extends Controller
         return redirect()->route('kampus.programs.index')->with('success', 'Program dihapus.');
     }
 
-    private function validated(Request $request, ?Program $program = null): array
+        private function validated(Request $request, ?Program $program = null): array
     {
         $data = $request->validate([
-            'title'        => ['required', 'string', 'max:255'],
+            'title'        => ['required', 'string', 'max:255', new ProgramTitle],
             'type'         => ['required', Rule::in(array_keys(Program::TYPES))],
-            'description'  => ['required', 'string'],
+            'description'  => ['required', 'string', 'max:5000', new MeaningfulText(10)],
             'quota'        => ['required', 'integer', 'min:1', 'max:10000'],
             // Saat membuat program baru, deadline tidak boleh di masa lalu
             'deadline'     => array_filter(['required', 'date', $program ? null : 'after_or_equal:today']),
-            'requirements' => ['required', 'string'],
+            'requirements' => ['required', 'string', 'max:3000', new MeaningfulText(5)],
             'partner_info' => ['nullable', 'string', 'max:2000'],
         ]);
 

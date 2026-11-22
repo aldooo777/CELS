@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Campus;
 use App\Models\CampusRegistration;
 use App\Models\User;
+use App\Rules\PersonName;
+use App\Rules\StartsWithLetter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,13 +28,13 @@ class CampusRegistrationController extends Controller
 
     public function store(Request $request)
     {
-                $data = $request->validate([
+        $data = $request->validate([
             'campus_type'       => ['required', Rule::in(['PTN', 'PTS'])],
             'campus_id'         => ['required'],   // id kampus atau "lainnya"
-            'new_campus_name'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:255'],
-            'new_campus_city'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:100'],
-            'pic_name'          => ['required', 'string', 'max:255'],
-            'pic_position'      => ['required', 'string', 'max:255'],
+            'new_campus_name'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:255', new StartsWithLetter],
+            'new_campus_city'   => ['required_if:campus_id,lainnya', 'nullable', 'string', 'max:100', new StartsWithLetter],
+            'pic_name'          => ['required', 'string', 'max:255', new PersonName],
+            'pic_position'      => ['required', 'string', 'max:255', new StartsWithLetter],
             'pic_phone'         => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,11}$/'],
             'institution_email' => ['required', 'email', 'max:255', 'unique:users,email', 'regex:/\.ac\.id$/i'],
             'document'          => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
@@ -41,10 +43,10 @@ class CampusRegistrationController extends Controller
             'institution_email.regex'     => 'Gunakan email institusi yang berakhiran .ac.id.',
             'new_campus_name.required_if' => 'Isi nama kampus jika kampus tidak ada di daftar.',
             'new_campus_city.required_if' => 'Isi kota kampus jika kampus tidak ada di daftar.',
-            'pic_phone.regex'             => 'Nomor telepon harus nomor HP Indonesia, contoh: 081234567890.',   // (b)
+            'pic_phone.regex'             => 'Nomor telepon harus nomor HP Indonesia, contoh: 081234567890.',
         ]);
 
-        // (c) Samakan format nomor: +628... / 628... menjadi 08...
+        // Samakan format nomor: +628... / 628... menjadi 08...
         $data['pic_phone'] = preg_replace('/^(\+62|62)/', '0', $data['pic_phone']);
 
         if ($data['campus_id'] !== 'lainnya') {
@@ -56,7 +58,7 @@ class CampusRegistrationController extends Controller
         }
 
         $user = DB::transaction(function () use ($request, $data) {
-            // 1. Tentukan kampus (dari daftar PTN atau kampus baru)
+            // 1. Tentukan kampus (dari daftar PTN/PTS atau kampus baru)
             if ($data['campus_id'] === 'lainnya') {
                 $campus = Campus::create([
                     'name'      => $data['new_campus_name'],

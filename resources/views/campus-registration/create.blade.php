@@ -10,74 +10,88 @@
             <h4><i class="bi bi-building-add"></i> Daftarkan Kampus</h4>
             <p class="text-muted">Setelah diverifikasi tim CELS, kampus Anda mendapat masa uji coba {{ \App\Models\Campus::TRIAL_DAYS }} hari untuk memposting program PDLK.</p>
 
-            <form method="POST" action="{{ route('campus-registration.store') }}" enctype="multipart/form-data">@csrf
+            {{-- data-step-form: kolom diisi berurutan, kolom berikutnya terbuka setelah kolom sebelumnya benar --}}
+            <form method="POST" action="{{ route('campus-registration.store') }}" enctype="multipart/form-data" data-step-form>@csrf
+
                 <h6 class="text-uppercase text-muted small mt-3">1. Kampus</h6>
                 <div class="row g-3 mb-3">
-    <div class="col-md-4">
-        <label class="form-label">Jenis kampus</label>
-        <select name="campus_type" id="campus_type" class="form-select" required>
-            <option value="">— Pilih jenis —</option>
-            <option value="PTN" @selected(old('campus_type') === 'PTN')>PTN (Negeri)</option>
-            <option value="PTS" @selected(old('campus_type') === 'PTS')>PTS (Swasta)</option>
-        </select>
-    </div>
-    <div class="col-md-8">
-        <label class="form-label">Nama kampus</label>
-        <select name="campus_id" id="campus_id" required></select>
-        <div class="form-text">Ketik nama atau kota kampus untuk mencari.</div>
-    </div>
-</div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="campus_type">Jenis kampus</label>
+                        <select name="campus_type" id="campus_type" class="form-select" required>
+                            <option value="">— Pilih jenis —</option>
+                            <option value="PTN" @selected(old('campus_type') === 'PTN')>PTN (Negeri)</option>
+                            <option value="PTS" @selected(old('campus_type') === 'PTS')>PTS (Swasta)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label" for="campus_id">Nama kampus</label>
+                        <select name="campus_id" id="campus_id" required></select>
+                        <div class="form-text">Ketik nama atau kota kampus untuk mencari.</div>
+                    </div>
+                </div>
                 <div id="new-campus" class="row g-3 mb-3" style="display:none">
                     <div class="col-md-8">
-                        <label class="form-label">Nama kampus</label>
-                        <input name="new_campus_name" value="{{ old('new_campus_name') }}" class="form-control">
+                        <label class="form-label" for="new_campus_name">Nama kampus</label>
+                        <input id="new_campus_name" name="new_campus_name" value="{{ old('new_campus_name') }}" class="form-control"
+                               maxlength="255" data-rule="starts-letter">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Kota</label>
-                        <input name="new_campus_city" value="{{ old('new_campus_city') }}" class="form-control">
+                        <label class="form-label" for="new_campus_city">Kota</label>
+                        <input id="new_campus_city" name="new_campus_city" value="{{ old('new_campus_city') }}" class="form-control"
+                               maxlength="100" data-rule="starts-letter">
                     </div>
                 </div>
 
                 <h6 class="text-uppercase text-muted small mt-4">2. Data PIC (penanggung jawab)</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Nama PIC</label>
-                        <input name="pic_name" value="{{ old('pic_name') }}" class="form-control" required>
+                        <label class="form-label" for="pic_name">Nama PIC</label>
+                        <input id="pic_name" name="pic_name" value="{{ old('pic_name') }}" class="form-control"
+                               maxlength="255" data-rule="person-name" autocomplete="name" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Jabatan</label>
-                        <input name="pic_position" value="{{ old('pic_position') }}" class="form-control" placeholder="mis. Kepala Unit PDLK" required>
+                        <label class="form-label" for="pic_position">Jabatan</label>
+                        <input id="pic_position" name="pic_position" value="{{ old('pic_position') }}" class="form-control"
+                               placeholder="mis. Kepala Unit PDLK" maxlength="255" data-rule="starts-letter" required>
                     </div>
                     <div class="col-md-6">
-    <label class="form-label">No. telepon / WhatsApp</label>
-    <input type="tel" name="pic_phone" id="pic_phone" value="{{ old('pic_phone') }}"
-           class="form-control @error('pic_phone') is-invalid @enderror"
-           inputmode="tel" maxlength="16" placeholder="081234567890"
-           pattern="(\+62|62|0)8[0-9]{8,11}"
-           title="Nomor HP Indonesia, contoh: 081234567890" required>
-    <div class="form-text">Nomor HP aktif yang terhubung ke WhatsApp. Contoh: 081234567890</div>
-    @error('pic_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-</div>
+                        <label class="form-label" for="pic_phone">No. telepon / WhatsApp</label>
+                        <input type="tel" id="pic_phone" name="pic_phone" value="{{ old('pic_phone') }}"
+                               class="form-control" inputmode="tel" maxlength="16" placeholder="081234567890"
+                               data-rule="phone-id" autocomplete="tel" required>
+                        <div class="form-text">Nomor HP aktif yang terhubung ke WhatsApp. Contoh: 081234567890</div>
+                    </div>
                     <div class="col-md-6">
-                        <label class="form-label">Email institusi</label>
-                        <input type="email" name="institution_email" value="{{ old('institution_email') }}" class="form-control" placeholder="pdlk@kampus.ac.id" required>
+                        <label class="form-label" for="institution_email">Email institusi</label>
+                        <input type="email" id="institution_email" name="institution_email" value="{{ old('institution_email') }}"
+                               class="form-control" placeholder="pdlk@kampus.ac.id" data-rule="email-acid" autocomplete="email" required>
                         <div class="form-text">Dipakai untuk login. Harus berakhiran .ac.id.</div>
                     </div>
                 </div>
 
                 <h6 class="text-uppercase text-muted small mt-4">3. Dokumen pendukung</h6>
                 <div class="mb-3">
-                    <input type="file" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
-                    <div class="form-text">Surat tugas atau surat penunjukan PIC. PDF/JPG/PNG, maks. 5 MB.</div>
+                    <label class="form-label" for="document">Surat tugas / surat penunjukan PIC</label>
+                    <input type="file" id="document" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <div class="form-text">PDF/JPG/PNG, maks. 5 MB.</div>
                 </div>
 
                 <h6 class="text-uppercase text-muted small mt-4">4. Kata sandi akun</h6>
                 <div class="row g-3">
-                    <div class="col-md-6"><input type="password" name="password" class="form-control" placeholder="Kata sandi (min. 8)" required></div>
-                    <div class="col-md-6"><input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi kata sandi" required></div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="password">Kata sandi</label>
+                        <input type="password" id="password" name="password" class="form-control" minlength="8"
+                               autocomplete="new-password" required>
+                        <div class="form-text">Minimal 8 karakter.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="password_confirmation">Ulangi kata sandi</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
+                               data-match="password" autocomplete="new-password" required>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary w-100 mt-4">Kirim Pendaftaran</button>
+                <button type="submit" class="btn btn-primary w-100 mt-4">Kirim Pendaftaran</button>
             </form>
         </div></div>
     </div>
@@ -130,8 +144,12 @@
     }
 
     // Tampilkan isian kampus baru jika memilih "Kampus tidak ada di daftar"
+    // dan jadikan kolomnya wajib diisi hanya saat terlihat
     function toggleNewCampus() {
-        newCampus.style.display = campusSelect.getValue() === 'lainnya' ? 'flex' : 'none';
+        const show = campusSelect.getValue() === 'lainnya';
+        newCampus.style.display = show ? 'flex' : 'none';
+        newCampus.querySelectorAll('input').forEach(input => input.required = show);
+        if (window.CELS) window.CELS.refresh(typeSelect.form);
     }
 
     typeSelect.addEventListener('change', () => loadCampuses(typeSelect.value));

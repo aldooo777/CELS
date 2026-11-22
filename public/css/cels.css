@@ -231,3 +231,26 @@ footer.cels-footer a:hover { color: var(--cels-hover); }
     object-fit: cover;
     padding: 2px;
 }
+
+/* ---------- Validasi langsung & pengisian bertahap (dipakai cels.js) ---------- */
+.step-locked,
+.ts-wrapper.step-locked .ts-control {
+    background-color: #eef1f4 !important;
+    cursor: not-allowed !important;
+    opacity: .65;
+}
+.ts-wrapper.is-invalid .ts-control { border-color: var(--bs-form-invalid-border-color); }
+.ts-wrapper.is-valid .ts-control { border-color: var(--bs-form-valid-border-color); }
+.nav-main .nav-link { white-space: nowrap; }
+
+/* ---------- Kolom tanggal hh/bb/tttt (dipakai cels.js) ---------- */
+.date-native {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    border: 0;
+    padding: 0;
+}

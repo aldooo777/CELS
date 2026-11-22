@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Campus;
 use App\Models\User;
+use App\Rules\PersonName;
+use App\Rules\StartsWithLetter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -23,9 +25,9 @@ class StudentRegisterController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'      => ['required', 'string', 'max:255'],
+            'name'      => ['required', 'string', 'max:255', new PersonName],
             'nim'       => ['required', 'string', 'max:30'],
-            'prodi'     => ['required', 'string', 'max:255'],
+            'prodi'     => ['required', 'string', 'max:255', new StartsWithLetter],
             'campus_id' => ['required', 'exists:campuses,id'],
             'email'     => ['required', 'email', 'max:255', 'unique:users,email', 'regex:/\.ac\.id$/i'],
             'password'  => ['required', 'confirmed', Password::min(8)],
@@ -41,7 +43,7 @@ class StudentRegisterController extends Controller
             'role'      => User::ROLE_MAHASISWA,
         ]);
 
-                // Tidak ada email verifikasi: akun menunggu diverifikasi admin kampus
+        // Tidak ada email verifikasi: akun menunggu diverifikasi admin kampus
         Auth::login($user);
 
         return redirect()->route('verification.notice')

@@ -1,7 +1,8 @@
 <div class="row g-3">
     <div class="col-md-8">
         <label class="form-label">Judul program</label>
-        <input name="title" value="{{ old('title', $program->title) }}" class="form-control" required>
+                <input name="title" value="{{ old('title', $program->title) }}" class="form-control"
+               maxlength="255" data-rule="program-title" required>
     </div>
     <div class="col-md-4">
         <label class="form-label">Jenis</label>
@@ -13,15 +14,17 @@
     </div>
     <div class="col-12">
         <label class="form-label">Deskripsi</label>
-        <textarea name="description" rows="5" class="form-control" required>{{ old('description', $program->description) }}</textarea>
+        <textarea name="description" rows="5" class="form-control" data-rule="meaningful-text" data-min-letters="10" required>{{ old('description', $program->description) }}</textarea>
     </div>
     <div class="col-md-4">
         <label class="form-label">Kuota</label>
-        <input type="number" min="1" name="quota" value="{{ old('quota', $program->quota) }}" class="form-control" required>
+        <input type="number" min="1" max="10000" step="1" name="quota" value="{{ old('quota', $program->quota) }}" class="form-control" required>
+<div class="form-text">Jumlah peserta yang bisa diterima, 1 sampai 10.000 orang.</div>
     </div>
     <div class="col-md-4">
         <label class="form-label">Deadline pendaftaran</label>
-        <input type="date" name="deadline" value="{{ old('deadline', $program->deadline?->format('Y-m-d')) }}" class="form-control" required>
+        <input type="date" name="deadline" value="{{ old('deadline', $program->deadline?->format('Y-m-d')) }}" class="form-control"
+               min="{{ $program->exists ? '' : now()->toDateString() }}" required>
     </div>
     <div class="col-md-4 d-flex align-items-end">
         <div class="form-check form-switch mb-2">
@@ -32,7 +35,7 @@
     </div>
     <div class="col-12">
         <label class="form-label">Syarat</label>
-        <textarea name="requirements" rows="4" class="form-control" placeholder="Satu syarat per baris" required>{{ old('requirements', $program->requirements) }}</textarea>
+        <textarea name="requirements" rows="4" class="form-control" placeholder="Satu syarat per baris" data-rule="meaningful-text" data-min-letters="5" required>{{ old('requirements', $program->requirements) }}</textarea>
     </div>
     <div class="col-12">
         <label class="form-label">Tautan / keterangan mitra <span class="text-muted">(opsional)</span></label>

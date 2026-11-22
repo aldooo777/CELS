@@ -441,19 +441,19 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('demo-requests.store') }}">@csrf
+                        <form method="POST" action="{{ route('demo-requests.store') }}" data-step-form>@csrf
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-semibold" for="institution_name">Nama Institusi /
                                         Perguruan Tinggi <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="institution_name" name="institution_name"
+                                    <input class="form-control" id="institution_name" name="institution_name" maxlength="255" data-rule="starts-letter"
                                         value="{{ old('institution_name') }}" placeholder="Contoh: Universitas Indonesia"
                                         required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-semibold" for="contact_name">Nama Kontak / Pejabat
                                         Unit <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="contact_name" name="contact_name"
+                                    <input class="form-control" id="contact_name" name="contact_name" maxlength="255" data-rule="person-name"
                                         value="{{ old('contact_name') }}" placeholder="Contoh: Dr. Budi Santoso"
                                         required>
                                 </div>
@@ -466,7 +466,7 @@
                                 <div class="col-md-6">
                                     <label class="form-label small fw-semibold" for="phone">Nomor Telepon / WhatsApp
                                         <span class="text-danger">*</span></label>
-                                    <input class="form-control" id="phone" name="phone" type="tel"
+                                    <input class="form-control" id="phone" name="phone" type="tel" inputmode="tel" maxlength="16" data-rule="phone-id"
                                         value="{{ old('phone') }}" placeholder="081234567890" required>
                                 </div>
                                 <div class="col-md-6">
