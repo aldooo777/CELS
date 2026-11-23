@@ -29,7 +29,7 @@
         <thead class="table-light"><tr><th>Nama</th><th>NIM</th><th>Prodi</th><th>Kampus</th><th>Status</th><th>Pendaftaran</th><th></th></tr></thead>
         <tbody>
         @forelse ($students as $s)
-            <tr>
+            <tr data-href="{{ route('admin.students.show', $s) }}">
                 <td>{{ $s->name }}<br><small class="text-muted">{{ $s->email }}</small></td>
                 <td>{{ $s->nim }}</td>
                 <td>{{ $s->prodi }}</td>

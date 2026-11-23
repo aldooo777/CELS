@@ -16,10 +16,11 @@
         <div class="card"><div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h5 class="mb-0">Pendaftar</h5>
-                <div class="btn-group btn-group-sm">
-                    <a href="{{ route('kampus.programs.show', $program) }}" class="btn btn-outline-secondary @if(!$status) active @endif">Semua</a>
+                <div class="btn-group btn-group-sm status-filter">
+                    <a href="{{ route('kampus.programs.show', $program) }}" class="btn btn-outline-primary @if(!$status) active @endif">Semua</a>
                     @foreach (\App\Models\Application::STATUS_LABELS as $k => $v)
-                        <a href="{{ route('kampus.programs.show', [$program, 'status' => $k]) }}" class="btn btn-outline-secondary @if($status === $k) active @endif">{{ $v }}</a>
+                        <a href="{{ route('kampus.programs.show', [$program, 'status' => $k]) }}"
+                           class="btn btn-outline-{{ \App\Models\Application::STATUS_COLORS[$k] }} @if($status === $k) active @endif">{{ $v }}</a>
                     @endforeach
                 </div>
             </div>
@@ -28,7 +29,7 @@
                 <thead><tr><th>Nama</th><th>NIM / Prodi</th><th>Tanggal</th><th>Status</th><th></th></tr></thead>
                 <tbody>
                 @forelse ($applications as $a)
-                    <tr>
+                    <tr data-href="{{ route('kampus.applications.show', $a) }}">
                         <td>{{ $a->student->name }}</td>
                         <td>{{ $a->student->nim }}<br><small class="text-muted">{{ $a->student->prodi }}</small></td>
                         <td>{{ $a->created_at->format('d/m/Y') }}</td>

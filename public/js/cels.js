@@ -324,6 +324,33 @@
         });
     }
 
+        /* ---------- Baris tabel bisa diklik (atribut data-href pada <tr>) ---------- */
+    function rowTarget(e) {
+        var row = e.target.closest('tr[data-href]');
+        if (!row) return null;
+        // Klik pada tombol/link/isian di dalam baris tetap menjalankan fungsinya sendiri
+        if (e.target.closest('a, button, input, select, textarea, label, form')) return null;
+        return row;
+    }
+
+    document.addEventListener('click', function (e) {
+        var row = rowTarget(e);
+        if (!row) return;
+        if (e.ctrlKey || e.metaKey) window.open(row.dataset.href, '_blank');   // Ctrl+klik = tab baru
+        else window.location.href = row.dataset.href;
+    });
+
+    document.addEventListener('auxclick', function (e) {                      // klik tengah = tab baru
+        var row = rowTarget(e);
+        if (row && e.button === 1) window.open(row.dataset.href, '_blank');
+    });
+
+    document.addEventListener('keydown', function (e) {                       // Enter pada baris
+        if (e.key === 'Enter' && e.target.matches && e.target.matches('tr[data-href]')) {
+            window.location.href = e.target.dataset.href;
+        }
+    });
+
     /* ---------- Tombol lihat kata sandi ---------- */
     function addPasswordToggle(input) {
         if (input.dataset.toggleReady) return;
@@ -395,6 +422,10 @@
     function init() {
         document.querySelectorAll('input[type="password"]').forEach(addPasswordToggle);
         document.querySelectorAll('input[type="date"]').forEach(enhanceDate);
+        document.querySelectorAll('tr[data-href]').forEach(function (row) {
+            row.tabIndex = 0;                                 // bisa dipilih dengan tombol Tab
+            row.setAttribute('role', 'link');
+        });
 
         document.querySelectorAll('form').forEach(function (form) {
             // Kolom yang sudah terisi (mis. setelah gagal validasi server) langsung dicek

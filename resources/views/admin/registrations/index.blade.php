@@ -12,7 +12,7 @@
         <thead class="table-light"><tr><th>Kampus</th><th>PIC</th><th>Email institusi</th><th>Diajukan</th><th>Status</th><th></th></tr></thead>
         <tbody>
         @forelse ($registrations as $r)
-            <tr>
+            <tr data-href="{{ route('admin.registrations.show', $r) }}">
                 <td>{{ $r->campus->name }} @unless($r->campus->is_listed)<span class="badge text-bg-light border">di luar daftar</span>@endunless</td>
                 <td>{{ $r->pic_name }}<br><small class="text-muted">{{ $r->pic_position }}</small></td>
                 <td>{{ $r->institution_email }}</td>

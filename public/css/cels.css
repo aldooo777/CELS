@@ -254,3 +254,13 @@ footer.cels-footer a:hover { color: var(--cels-hover); }
     border: 0;
     padding: 0;
 }
+
+/* ---------- Baris tabel yang bisa diklik ---------- */
+tr[data-href] { cursor: pointer; }
+tr[data-href]:hover > td { background-color: var(--cels-bg-alt) !important; }
+tr[data-href]:focus-visible { outline: 2px solid var(--cels-navbar); outline-offset: -2px; }
+
+/* ---------- Tombol filter status pendaftaran ---------- */
+.status-filter .btn { font-weight: 500; }
+.status-filter .btn-outline-info { --bs-btn-color: #0b7a92; --bs-btn-border-color: #0dcaf0; --bs-btn-hover-color: #0b3d4a; }
+.status-filter .btn-outline-warning { --bs-btn-color: #9a6b00; --bs-btn-hover-color: #3d2b00; }

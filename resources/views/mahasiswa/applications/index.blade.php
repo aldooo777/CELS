@@ -7,7 +7,7 @@
         <thead class="table-light"><tr><th>Program</th><th>Jenis</th><th>Tanggal daftar</th><th>Status</th><th></th></tr></thead>
         <tbody>
         @forelse ($applications as $a)
-            <tr>
+            <tr data-href="{{ route('mahasiswa.applications.show', $a) }}">
                 <td>{{ $a->program->title }}</td>
                 <td>{{ $a->program->typeLabel() }}</td>
                 <td>{{ $a->created_at->format('d/m/Y') }}</td>

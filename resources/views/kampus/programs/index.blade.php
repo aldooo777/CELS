@@ -10,7 +10,7 @@
         <thead class="table-light"><tr><th>Judul</th><th>Jenis</th><th>Deadline</th><th>Kuota</th><th>Pendaftar</th><th>Status</th><th></th></tr></thead>
         <tbody>
         @forelse ($programs as $p)
-            <tr>
+            <tr data-href="{{ route('kampus.programs.show', $p) }}">
                 <td><a href="{{ route('kampus.programs.show', $p) }}" class="fw-semibold">{{ $p->title }}</a></td>
                 <td>{{ $p->typeLabel() }}</td>
                 <td>{{ $p->deadline->format('d/m/Y') }}</td>

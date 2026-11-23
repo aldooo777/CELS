@@ -37,7 +37,7 @@
         <thead class="table-light"><tr><th>Judul</th><th>Kampus</th><th>Jenis</th><th>Deadline</th><th>Kuota</th><th>Pendaftar</th><th>Status</th><th></th></tr></thead>
         <tbody>
         @forelse ($programs as $p)
-            <tr>
+            <tr data-href="{{ route('admin.programs.show', $p) }}">
                 <td class="fw-semibold">{{ $p->title }}</td>
                 <td>{{ $p->campus->name }}</td>
                 <td>{{ $p->typeLabel() }}</td>

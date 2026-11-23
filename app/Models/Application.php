@@ -20,7 +20,7 @@ class Application extends Model
     ];
 
     public const STATUS_COLORS = [
-        self::STATUS_DIAJUKAN  => 'secondary',
+        self::STATUS_DIAJUKAN  => 'info',
         self::STATUS_DIPROSES  => 'warning',
         self::STATUS_DISETUJUI => 'success',
         self::STATUS_DITOLAK   => 'danger',

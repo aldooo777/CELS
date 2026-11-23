@@ -36,8 +36,8 @@
     <table class="table align-middle mb-0">
         <thead><tr><th>Mahasiswa</th><th>Program</th><th>Tanggal</th><th>Status</th><th></th></tr></thead>
         <tbody>
-        @forelse ($latest as $a)
-            <tr>
+                @forelse ($latest as $a)
+            <tr data-href="{{ route('kampus.applications.show', $a) }}">
                 <td>{{ $a->student->name }}<br><small class="text-muted">{{ $a->student->nim }} · {{ $a->student->prodi }}</small></td>
                 <td>{{ $a->program->title }}</td>
                 <td>{{ $a->created_at->format('d/m/Y') }}</td>
