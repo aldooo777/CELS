@@ -33,6 +33,15 @@
             <label class="form-check-label" for="is_open">Pendaftaran dibuka</label>
         </div>
     </div>
+        <div class="col-md-6">
+        <label class="form-label">Sasaran pendaftar</label>
+        <select name="audience" class="form-select" required>
+            @foreach (\App\Models\Program::AUDIENCES as $k => $v)
+                <option value="{{ $k }}" @selected(old('audience', $program->audience ?? 'internal') === $k)>{{ $v }}</option>
+            @endforeach
+        </select>
+        <div class="form-text">Program tetap terlihat oleh mahasiswa kampus lain. Pilihan ini menentukan siapa yang boleh mendaftar.</div>
+    </div>
     <div class="col-12">
         <label class="form-label">Syarat</label>
         <textarea name="requirements" rows="4" class="form-control" placeholder="Satu syarat per baris" data-rule="meaningful-text" data-min-letters="5" required>{{ old('requirements', $program->requirements) }}</textarea>

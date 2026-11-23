@@ -27,6 +27,7 @@
             <option value="">Semua status</option>
             <option value="dibuka" @selected($status === 'dibuka')>Dibuka</option>
             <option value="ditutup" @selected($status === 'ditutup')>Ditutup</option>
+            <option value="draf" @selected($status === 'draf')>Draf</option>
         </select>
     </div>
     <div class="col-md-2"><button class="btn btn-primary w-100">Filter</button></div>
@@ -44,11 +45,7 @@
                 <td>{{ $p->deadline->format('d/m/Y') }}</td>
                 <td>{{ $p->approved_count }}/{{ $p->quota }}</td>
                 <td>{{ $p->applications_count }}</td>
-                <td>
-                    @if (! $p->is_open)<span class="badge text-bg-secondary">Ditutup</span>
-                    @elseif ($p->deadline->endOfDay()->isPast())<span class="badge text-bg-secondary">Lewat deadline</span>
-                    @else<span class="badge text-bg-success">Dibuka</span>@endif
-                </td>
+                <td>@include('partials.program-status', ['program' => $p])</td>
                 <td><a href="{{ route('admin.programs.show', $p) }}" class="btn btn-sm btn-outline-primary">Detail</a></td>
             </tr>
         @empty
@@ -59,4 +56,3 @@
 </div></div>
 <div class="mt-3">{{ $programs->links('pagination::bootstrap-5') }}</div>
 @endsection
-

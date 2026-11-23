@@ -94,6 +94,7 @@ Route::middleware(['auth', 'role:admin_kampus'])->prefix('kampus')->name('kampus
 
         Route::resource('program', Kampus\ProgramController::class)
             ->parameters(['program' => 'program'])->names('programs');
+        Route::patch('/program/{program}/posting', [Kampus\ProgramController::class, 'publish'])->name('programs.publish');
 
         Route::get('/pendaftar/{application}', [Kampus\ApplicationController::class, 'show'])->name('applications.show');
         Route::patch('/pendaftar/{application}/status', [Kampus\ApplicationController::class, 'updateStatus'])->name('applications.status');

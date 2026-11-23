@@ -73,7 +73,10 @@
                     <div class="card card-cels feature-card h-100">
                         <div class="card-body p-4 d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <span class="badge-cels-secondary">{{ $p->typeLabel() }}</span>
+                                <span>
+                                    <span class="badge-cels-secondary">{{ $p->typeLabel() }}</span>
+                                    @if ($p->isOpenForAll())<span class="badge text-bg-info ms-1">Semua kampus</span>@endif
+                                </span>
                                 <small class="text-muted"><i class="bi bi-people me-1"></i>Kuota {{ $p->quota }}</small>
                             </div>
                             <h5 class="fs-6 fw-bold mb-1">{{ $p->title }}</h5>
@@ -85,7 +88,7 @@
 
                             @if (! $viewer)
                                 <a href="{{ route('login') }}" class="btn btn-cels-cta btn-sm w-100">Masuk untuk mendaftar</a>
-                            @elseif ($viewer->isMahasiswa() && $viewer->campus_id === $p->campus_id)
+                            @elseif ($p->isOpenTo($viewer))
                                 <a href="{{ route('mahasiswa.programs.show', $p) }}" class="btn btn-cels-cta btn-sm w-100">Lihat &amp; daftar</a>
                             @else
                                 <span class="btn btn-outline-secondary btn-sm w-100 disabled">Khusus mahasiswa {{ $p->campus->short_name ?? $p->campus->name }}</span>

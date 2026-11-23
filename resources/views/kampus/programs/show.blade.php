@@ -5,11 +5,23 @@
 <div class="d-flex justify-content-between align-items-start mt-2 mb-3">
     <div>
         <h3 class="mb-1">{{ $program->title }}</h3>
-        <span class="badge text-bg-primary">{{ $program->typeLabel() }}</span>
+        <span class="badge text-bg-light border">{{ $program->typeLabel() }}</span>
+        @include('partials.program-status')
         <span class="text-muted small ms-2">Deadline {{ $program->deadline->translatedFormat('d F Y') }} · Disetujui {{ $approvedCount }}/{{ $program->quota }}</span>
     </div>
     <a href="{{ route('kampus.programs.edit', $program) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i> Ubah</a>
 </div>
+
+@unless ($program->isPublished())
+    <div class="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <span>Program ini masih <b>draf</b> dan belum terlihat oleh mahasiswa.</span>
+        <form method="POST" action="{{ route('kampus.programs.publish', $program) }}">@csrf @method('PATCH')
+            <button class="btn btn-sm btn-primary">Posting sekarang</button>
+        </form>
+    </div>
+@else
+    <p class="small text-muted">Diposting {{ $program->published_at->translatedFormat('d F Y, H:i') }} · Sasaran: {{ $program->audienceLabel() }}</p>
+@endunless
 
 <div class="row g-4">
     <div class="col-lg-8">
@@ -31,7 +43,7 @@
                 @forelse ($applications as $a)
                     <tr data-href="{{ route('kampus.applications.show', $a) }}">
                         <td>{{ $a->student->name }}</td>
-                        <td>{{ $a->student->nim }}<br><small class="text-muted">{{ $a->student->prodi }}</small></td>
+                        <td>{{ $a->student->nim }}<br><small class="text-muted">{{ $a->student->prodi }}@if ($a->student->campus_id !== $program->campus_id) · {{ $a->student->campus->short_name ?? $a->student->campus->name }}@endif</small></td>
                         <td>{{ $a->created_at->format('d/m/Y') }}</td>
                         <td>@include('partials.application-badge', ['application' => $a])</td>
                         <td><a href="{{ route('kampus.applications.show', $a) }}" class="btn btn-sm btn-outline-primary">Periksa</a></td>

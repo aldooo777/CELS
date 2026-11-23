@@ -3,40 +3,51 @@
 namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campus;
 use App\Models\Program;
 use Illuminate\Http\Request;
 
-/** Mahasiswa melihat program yang diposting kampusnya sendiri */
+/** Mahasiswa melihat program dari kampusnya sendiri dan dari kampus lain */
 class ProgramController extends Controller
 {
     public function index(Request $request)
     {
+        $user   = $request->user();
         $type   = $request->query('type');
         $search = $request->query('q');
+        $scope  = $request->query('kampus', 'semua');   // semua | saya | bisa | {id kampus}
+
+        // Hanya kampus yang uji coba / langganannya masih berlaku
+        $activeCampusIds = Campus::joined()->get()->filter->isActive()->pluck('id');
 
         $programs = Program::available()
-            ->where('campus_id', $request->user()->campus_id)
+            ->whereIn('campus_id', $activeCampusIds)
+            ->with('campus')
+            ->when($scope === 'saya', fn ($q) => $q->where('campus_id', $user->campus_id))
+            ->when($scope === 'bisa', fn ($q) => $q->openTo($user))
+            ->when(ctype_digit((string) $scope), fn ($q) => $q->where('campus_id', $scope))
             ->when($type, fn ($q) => $q->where('type', $type))
-            ->when($search, fn ($q) => $q->where('title', 'like', "%{$search}%"))
+            ->when($search, fn ($q) => $q->where('title', 'ilike', "%{$search}%"))
             ->orderBy('deadline')->paginate(12)->withQueryString();
-
-        $appliedIds = $request->user()->applications()->pluck('program_id')->all();
 
         return view('mahasiswa.programs.index', [
             'programs'   => $programs,
-            'appliedIds' => $appliedIds,
+            'appliedIds' => $user->applications()->pluck('program_id')->all(),
+            'campuses'   => Campus::whereIn('id', $activeCampusIds)->whereHas('programs', fn ($q) => $q->available())->orderBy('name')->get(),
             'types'      => Program::TYPES,
             'type'       => $type,
             'search'     => $search,
+            'scope'      => $scope,
         ]);
     }
 
     public function show(Request $request, Program $program)
     {
-        abort_unless($program->campus_id === $request->user()->campus_id, 404);
+        // Draf atau kampus yang tidak aktif tidak bisa dibuka mahasiswa
+        abort_unless($program->isPublished() && $program->campus->isActive(), 404);
 
         return view('mahasiswa.programs.show', [
-            'program'     => $program->load('campus'),
+            'program'     => $program,
             'application' => $request->user()->applications()->where('program_id', $program->id)->first(),
         ]);
     }

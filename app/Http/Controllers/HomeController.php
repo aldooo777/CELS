@@ -12,7 +12,7 @@ class HomeController extends Controller
         $programs = Program::available()                       // dibuka & belum lewat deadline
             ->whereHas('campus', fn ($q) => $q->joined())      // kampus sudah disetujui
             ->with('campus')
-            ->latest()
+            ->latest('published_at')
             ->get()
             ->filter(fn ($p) => $p->campus->isActive())        // uji coba / langganan masih berlaku
             ->take(6);

@@ -204,6 +204,7 @@ return [
         'description'           => 'deskripsi',
         'quota'                 => 'kuota',
         'deadline'              => 'deadline',
+        'audience'              => 'sasaran pendaftar',
         'requirements'          => 'syarat',
         'partner_info'          => 'keterangan mitra',
         'status'                => 'status',

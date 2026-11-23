@@ -12,7 +12,7 @@
                 <a href="{{ route('mahasiswa.programs.show', $p) }}" class="d-block border rounded p-3 mb-2 text-reset text-decoration-none">
                     <span class="badge text-bg-primary">{{ $p->typeLabel() }}</span>
                     <div class="fw-semibold mt-1">{{ $p->title }}</div>
-                    <small class="text-muted">Deadline {{ $p->deadline->translatedFormat('d F Y') }} · Kuota {{ $p->quota }}</small>
+                    <small class="text-muted">{{ $p->campus->short_name ?? $p->campus->name }} · Deadline {{ $p->deadline->translatedFormat('d F Y') }} · Kuota {{ $p->quota }}</small>
                 </a>
             @empty
                 <p class="text-muted mb-0">Belum ada program yang dibuka.</p>

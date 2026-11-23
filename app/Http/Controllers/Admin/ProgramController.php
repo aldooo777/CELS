@@ -27,9 +27,10 @@ class ProgramController extends Controller
             ->when($campusId, fn ($q) => $q->where('campus_id', $campusId))
             ->when($type, fn ($q) => $q->where('type', $type))
             ->when($status === 'dibuka', fn ($q) => $q->available())
-            ->when($status === 'ditutup', fn ($q) => $q->where(fn ($w) => $w
+            ->when($status === 'ditutup', fn ($q) => $q->whereNotNull('published_at')->where(fn ($w) => $w
                 ->where('is_open', false)
                 ->orWhereDate('deadline', '<', now()->toDateString())))
+            ->when($status === 'draf', fn ($q) => $q->whereNull('published_at'))
             ->latest()
             ->paginate(20)->withQueryString();
 

@@ -65,15 +65,20 @@ class ApplicationController extends Controller
         ]);
     }
 
-    /** Cek kelayakan: kampus sendiri, program dibuka, belum pernah daftar */
+        /** Cek kelayakan: program terbit, sasaran pendaftar cocok, masih dibuka, belum pernah daftar */
     private function guard(Request $request, Program $program)
     {
-        abort_unless($program->campus_id === $request->user()->campus_id, 404);
+        abort_unless($program->isPublished() && $program->campus->isActive(), 404);
 
         $existing = $request->user()->applications()->where('program_id', $program->id)->first();
         if ($existing) {
             return redirect()->route('mahasiswa.applications.show', $existing)
                 ->with('success', 'Anda sudah mendaftar pada program ini.');
+        }
+
+        if (! $program->isOpenForAll() && $program->campus_id !== $request->user()->campus_id) {
+            return redirect()->route('mahasiswa.programs.show', $program)
+                ->withErrors(['program' => 'Program ini hanya untuk mahasiswa '.$program->campus->name.'.']);
         }
 
         if (! $program->isAcceptingApplications()) {

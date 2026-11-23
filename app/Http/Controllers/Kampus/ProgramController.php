@@ -15,32 +15,47 @@ class ProgramController extends Controller
 {
     public function index(Request $request)
     {
-        $programs = $request->user()->campus->programs()
+        $posting = in_array($request->query('posting'), ['terbit', 'draf'], true) ? $request->query('posting') : '';
+        $base    = $request->user()->campus->programs();
+
+        $counts = [
+            ''       => (clone $base)->count(),
+            'terbit' => (clone $base)->whereNotNull('published_at')->count(),
+            'draf'   => (clone $base)->whereNull('published_at')->count(),
+        ];
+
+        $programs = $base
+            ->when($posting === 'terbit', fn ($q) => $q->whereNotNull('published_at'))
+            ->when($posting === 'draf', fn ($q) => $q->whereNull('published_at'))
             ->withCount([
                 'applications',
                 'applications as pending_count'  => fn ($q) => $q->whereIn('status', [Application::STATUS_DIAJUKAN, Application::STATUS_DIPROSES]),
                 'applications as approved_count' => fn ($q) => $q->where('status', Application::STATUS_DISETUJUI),
             ])
-            ->latest()->paginate(10);
+            ->latest()->paginate(10)->withQueryString();
 
-        return view('kampus.programs.index', compact('programs'));
+        return view('kampus.programs.index', compact('programs', 'posting', 'counts'));
     }
 
     public function create()
     {
-        return view('kampus.programs.create', ['program' => new Program(['is_open' => true])]);
+        return view('kampus.programs.create', ['program' => new Program(['is_open' => true, 'audience' => 'internal'])]);
     }
 
     public function store(Request $request)
     {
-        $data = $this->validated($request);
+        $data    = $this->validated($request);
+        $publish = $request->input('action') === 'publish';
 
         $program = $request->user()->campus->programs()->create([
             ...$data,
-            'created_by' => $request->user()->id,
+            'created_by'   => $request->user()->id,
+            'published_at' => $publish ? now() : null,
         ]);
 
-        return redirect()->route('kampus.programs.show', $program)->with('success', 'Program berhasil diposting.');
+        return redirect()->route('kampus.programs.show', $program)->with('success', $publish
+            ? 'Program berhasil diposting dan sudah tampil untuk mahasiswa.'
+            : 'Program disimpan sebagai draf. Mahasiswa belum bisa melihatnya.');
     }
 
     public function show(Request $request, Program $program)
@@ -52,7 +67,7 @@ class ProgramController extends Controller
         return view('kampus.programs.show', [
             'program'      => $program,
             'status'       => $status,
-            'applications' => $program->applications()->with('student')
+            'applications' => $program->applications()->with('student.campus')
                 ->when($status, fn ($q) => $q->where('status', $status))
                 ->latest()->paginate(20)->withQueryString(),
             'approvedCount' => $program->approvedCount(),
@@ -70,9 +85,39 @@ class ProgramController extends Controller
     {
         $this->authorizeCampus($request, $program);
 
-        $program->update($this->validated($request, $program));
+        $data   = $this->validated($request, $program);
+        $action = $request->input('action');            // publish | draft | null (simpan saja)
 
-        return redirect()->route('kampus.programs.show', $program)->with('success', 'Program diperbarui.');
+        if ($action === 'publish' && ! $program->isPublished()) {
+            $data['published_at'] = now();
+        } elseif ($action === 'draft' && $program->isPublished()) {
+            if ($program->applications()->exists()) {
+                return back()->withInput()->withErrors(['action' => 'Program yang sudah memiliki pendaftar tidak bisa dijadikan draf. Tutup pendaftarannya saja.']);
+            }
+            $data['published_at'] = null;
+        }
+
+        $program->update($data);
+
+        $message = match (true) {
+            $action === 'publish' => 'Program berhasil diposting dan sudah tampil untuk mahasiswa.',
+            $action === 'draft'   => 'Program dijadikan draf dan disembunyikan dari mahasiswa.',
+            default               => 'Program diperbarui.',
+        };
+
+        return redirect()->route('kampus.programs.show', $program)->with('success', $message);
+    }
+
+    /** Tombol "Posting sekarang" pada halaman detail draf */
+    public function publish(Request $request, Program $program)
+    {
+        $this->authorizeCampus($request, $program);
+
+        if (! $program->isPublished()) {
+            $program->update(['published_at' => now()]);
+        }
+
+        return redirect()->route('kampus.programs.show', $program)->with('success', 'Program berhasil diposting dan sudah tampil untuk mahasiswa.');
     }
 
     public function destroy(Request $request, Program $program)
@@ -91,7 +136,7 @@ class ProgramController extends Controller
         return redirect()->route('kampus.programs.index')->with('success', 'Program dihapus.');
     }
 
-        private function validated(Request $request, ?Program $program = null): array
+    private function validated(Request $request, ?Program $program = null): array
     {
         $data = $request->validate([
             'title'        => ['required', 'string', 'max:255', new ProgramTitle],
@@ -102,7 +147,11 @@ class ProgramController extends Controller
             'deadline'     => array_filter(['required', 'date', $program ? null : 'after_or_equal:today']),
             'requirements' => ['required', 'string', 'max:3000', new MeaningfulText(5)],
             'partner_info' => ['nullable', 'string', 'max:2000'],
+            'audience'     => ['required', Rule::in(array_keys(Program::AUDIENCES))],
+            'action'       => ['nullable', Rule::in(['publish', 'draft'])],
         ]);
+
+        unset($data['action']);
 
         $data['is_open'] = $request->boolean('is_open');
 

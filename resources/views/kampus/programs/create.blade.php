@@ -7,7 +7,11 @@
         <h4>Posting Program Baru</h4>
         <form method="POST" action="{{ route('kampus.programs.store') }}">@csrf
             @include('kampus.programs._form')
-            <button class="btn btn-primary mt-4">Posting</button>
+            <div class="d-flex flex-wrap gap-2 justify-content-end mt-4">
+                <button name="action" value="draft" class="btn btn-outline-secondary">Simpan sebagai draf</button>
+                <button name="action" value="publish" class="btn btn-primary">Posting sekarang</button>
+            </div>
+            <p class="small text-muted text-end mt-2 mb-0">Draf hanya terlihat oleh admin kampus dan bisa diposting kapan saja.</p>
         </form>
     </div></div>
 </div></div>
