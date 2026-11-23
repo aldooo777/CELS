@@ -101,6 +101,13 @@ Route::middleware(['auth', 'role:admin_kampus'])->prefix('kampus')->name('kampus
             ->whereIn('type', ['cv', 'dokumen'])->name('applications.download');
 
         Route::get('/mahasiswa', [Kampus\StudentController::class, 'index'])->name('students.index');
+
+        // Impor mahasiswa dari Excel
+        Route::get('/mahasiswa/impor', [Kampus\StudentImportController::class, 'create'])->name('students.import');
+        Route::get('/mahasiswa/impor/template', [Kampus\StudentImportController::class, 'template'])->name('students.import.template');
+        Route::post('/mahasiswa/impor', [Kampus\StudentImportController::class, 'preview'])->name('students.import.preview');
+        Route::post('/mahasiswa/impor/simpan', [Kampus\StudentImportController::class, 'store'])->name('students.import.store');
+        Route::delete('/mahasiswa/impor', [Kampus\StudentImportController::class, 'cancel'])->name('students.import.cancel');
         Route::post('/mahasiswa/{student}/verifikasi', [Kampus\StudentController::class, 'verify'])->name('students.verify');
     });
 });

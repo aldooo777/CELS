@@ -1,7 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Mahasiswa')
 @section('content')
-<h3>Mahasiswa {{ auth()->user()->campus->name }}</h3>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <h3 class="mb-0">Mahasiswa {{ auth()->user()->campus->name }}</h3>
+    <a href="{{ route('kampus.students.import') }}" class="btn btn-primary">
+        <i class="bi bi-file-earmark-excel me-1"></i> Impor dari Excel
+    </a>
+</div>
 <p class="text-muted">Verifikasi manual untuk mahasiswa yang belum bisa memverifikasi lewat email.</p>
 <form class="row g-2 mb-3">
     <div class="col-md-3">

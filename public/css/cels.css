@@ -316,6 +316,7 @@ tr[data-href]:focus-visible { outline: 2px solid var(--cels-navbar); outline-off
 .account-badge-role { background: var(--cels-accent-stripe); color: var(--cels-primary); }
 .account-badge-campus { background: rgba(255, 255, 255, .2); color: #fff; }
 
+
 .account-card-body { padding: .75rem 1rem; font-size: .88rem; color: var(--cels-text-body); }
 .account-card-body li { display: flex; gap: .6rem; align-items: flex-start; padding: .3rem 0; }
 .account-card-body li i { color: var(--cels-navbar); width: 18px; text-align: center; }
@@ -333,3 +334,12 @@ tr[data-href]:focus-visible { outline: 2px solid var(--cels-navbar); outline-off
 .nav-topbar .account-card .btn-outline-primary:hover { color: #fff; }
 .nav-topbar .account-card .btn-outline-danger { color: #dc3545; }
 .nav-topbar .account-card .btn-outline-danger:hover { color: #fff; }
+
+/* ---------- Impor mahasiswa ---------- */
+.step-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--cels-navbar); color: #fff; font-size: .85rem; margin-right: .35rem;
+}
+.import-table td { white-space: nowrap; }
+.import-table td:last-child { white-space: normal; min-width: 220px; }
