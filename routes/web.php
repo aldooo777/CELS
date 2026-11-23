@@ -10,6 +10,7 @@ use App\Http\Controllers\DemoRequestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Kampus;
 use App\Http\Controllers\Mahasiswa;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,14 @@ Route::middleware('guest')->group(function () {
 */
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    // Profil Saya (semua peran)
+    Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profil/kata-sandi', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::post('/profil/foto', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
+    Route::delete('/profil/foto', [ProfileController::class, 'destroyPhoto'])->name('profile.photo.destroy');
+    Route::get('/profil/foto/{user}', [ProfileController::class, 'photo'])->name('profile.photo');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     // Halaman tunggu: mahasiswa menunggu diverifikasi admin kampus

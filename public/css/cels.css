@@ -264,3 +264,72 @@ tr[data-href]:focus-visible { outline: 2px solid var(--cels-navbar); outline-off
 .status-filter .btn { font-weight: 500; }
 .status-filter .btn-outline-info { --bs-btn-color: #0b7a92; --bs-btn-border-color: #0dcaf0; --bs-btn-hover-color: #0b3d4a; }
 .status-filter .btn-outline-warning { --bs-btn-color: #9a6b00; --bs-btn-hover-color: #3d2b00; }
+
+/* ---------- Foto profil / inisial ---------- */
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+.avatar-initials {
+    background: linear-gradient(135deg, var(--cels-navbar), var(--cels-secondary));
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+.avatar-ring { border: 3px solid rgba(255, 255, 255, .85); box-shadow: 0 4px 14px rgba(0, 0, 0, .25); }
+
+/* ---------- Menu akun (pojok kanan atas) ---------- */
+.account-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 999px;
+    color: #fff;
+    padding: .15rem .7rem .15rem .2rem;
+    font-size: .82rem;
+    transition: background .2s ease;
+}
+.account-toggle:hover, .account-toggle[aria-expanded="true"] { background: rgba(255, 255, 255, .2); }
+.account-toggle::after { margin-left: .45rem; }
+
+.account-card {
+    width: 320px;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: .5rem !important;
+}
+.account-card-header, .profile-summary-header {
+    background: radial-gradient(circle at 80% 0%, rgba(242, 140, 40, .35), transparent 55%),
+                linear-gradient(135deg, var(--cels-primary), var(--cels-navbar));
+    padding: 1.5rem 1rem 1.25rem;
+    text-align: center;
+}
+.profile-summary-header { padding: 2rem 1rem 1.5rem; }
+.account-badge-role { background: var(--cels-accent-stripe); color: var(--cels-primary); }
+.account-badge-campus { background: rgba(255, 255, 255, .2); color: #fff; }
+
+.account-card-body { padding: .75rem 1rem; font-size: .88rem; color: var(--cels-text-body); }
+.account-card-body li { display: flex; gap: .6rem; align-items: flex-start; padding: .3rem 0; }
+.account-card-body li i { color: var(--cels-navbar); width: 18px; text-align: center; }
+
+.account-card-footer {
+    display: flex;
+    gap: .5rem;
+    padding: .75rem 1rem 1rem;
+    border-top: 1px solid var(--cels-border);
+    background: #f8fafc;
+}
+
+/* Tombol di dalam menu akun tidak ikut warna link bar atas */
+.nav-topbar .account-card .btn-outline-primary { color: var(--cels-navbar); }
+.nav-topbar .account-card .btn-outline-primary:hover { color: #fff; }
+.nav-topbar .account-card .btn-outline-danger { color: #dc3545; }
+.nav-topbar .account-card .btn-outline-danger:hover { color: #fff; }

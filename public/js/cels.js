@@ -192,6 +192,11 @@
             markRequired(el);
             if (!isVisible(el)) return;
 
+            if (el.disabled) {                                  // kolom yang tidak bisa diubah: tanpa tanda
+                el.classList.remove('is-valid', 'is-invalid');
+                return;
+            }
+
             if (stepMode) setLocked(el, blocked);
             if (blocked) { show(el, ''); return; }
 

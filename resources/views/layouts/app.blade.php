@@ -27,13 +27,7 @@
             </span>
             <div class="d-flex align-items-center gap-3 ms-auto">
                 @auth
-                    <span class="d-none d-sm-inline">
-                        <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
-                        <span class="opacity-75">· {{ auth()->user()->roleLabel() }}@if(auth()->user()->campus) · {{ auth()->user()->campus->short_name ?? auth()->user()->campus->name }}@endif</span>
-                    </span>
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">@csrf
-                        <button class="btn-login"><i class="bi bi-box-arrow-right me-1"></i> Keluar</button>
-                    </form>
+                    @include('partials.account-menu')
                 @else
                     <a href="{{ route('register') }}"><i class="bi bi-mortarboard me-1"></i>Daftar Mahasiswa</a>
                     <a class="btn-login" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right me-1"></i> Masuk</a>
@@ -118,7 +112,7 @@
 @endif
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('js/cels.js') }}?v=8"></script>
+<script src="{{ asset('js/cels.js') }}?v=9"></script>
 @stack('scripts')
 </body>
 </html>
