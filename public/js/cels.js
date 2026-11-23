@@ -192,7 +192,7 @@
             markRequired(el);
             if (!isVisible(el)) return;
 
-            if (el.disabled) {                                  // kolom yang tidak bisa diubah: tanpa tanda
+            if (el.disabled || (/^(checkbox|radio)$/.test(el.type) && !el.required)) {   // kolom terkunci / centang opsional: tanpa tanda
                 el.classList.remove('is-valid', 'is-invalid');
                 return;
             }

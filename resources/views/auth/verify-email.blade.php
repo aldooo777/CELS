@@ -1,31 +1,25 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 @section('title', 'Menunggu Verifikasi')
-@section('content')
-<div class="row justify-content-center">
-    <div class="col-md-7">
-        <div class="card text-center"><div class="card-body p-5">
-            <i class="bi bi-hourglass-split display-3 text-warning"></i>
-            <h4 class="mt-3">Akun menunggu verifikasi</h4>
-            <p class="text-muted mb-4">
-                Halo <b>{{ $user->name }}</b>, akun Anda sudah terdaftar. Admin kampus
-                <b>{{ $user->campus?->name ?? '-' }}</b> akan memeriksa data Anda sebelum Anda bisa melihat dan mendaftar program PDLK.
-            </p>
+@section('eyebrow', 'Status akun')
+@section('heading', 'Menunggu verifikasi kampus')
+@section('lead')
+    Akun Anda sudah terdaftar. Admin kampus <b>{{ $user->campus?->name ?? '-' }}</b> perlu memeriksa data Anda
+    sebelum Anda bisa melihat dan mendaftar program PDLK.
+@endsection
+@section('width', '560px')
 
-            <table class="table table-sm text-start mx-auto mb-4" style="max-width:420px">
-                <tr><th class="text-muted fw-normal">Nama</th><td>{{ $user->name }}</td></tr>
-                <tr><th class="text-muted fw-normal">NIM</th><td>{{ $user->nim }}</td></tr>
-                <tr><th class="text-muted fw-normal">Prodi</th><td>{{ $user->prodi }}</td></tr>
-                <tr><th class="text-muted fw-normal">Email</th><td>{{ $user->email }}</td></tr>
-            </table>
-
-            <p class="small text-muted mb-3">
-                Sudah lama menunggu? Hubungi unit kemahasiswaan / PDLK kampus Anda.
-                Halaman ini akan terbuka otomatis setelah akun diverifikasi.
-            </p>
-            <a href="{{ route('verification.notice') }}" class="btn btn-outline-primary">
-                <i class="bi bi-arrow-clockwise"></i> Cek status
-            </a>
-        </div></div>
-    </div>
-</div>
+@section('form')
+<div class="form-section">Data yang Anda kirim</div>
+<dl class="row mb-4">
+    <dt class="col-4 text-muted fw-normal">Nama</dt><dd class="col-8">{{ $user->name }}</dd>
+    <dt class="col-4 text-muted fw-normal">NIM</dt><dd class="col-8">{{ $user->nim }}</dd>
+    <dt class="col-4 text-muted fw-normal">Prodi</dt><dd class="col-8">{{ $user->prodi }}</dd>
+    <dt class="col-4 text-muted fw-normal">Kampus</dt><dd class="col-8">{{ $user->campus?->name ?? '-' }}</dd>
+    <dt class="col-4 text-muted fw-normal">Email</dt><dd class="col-8 text-break">{{ $user->email }}</dd>
+</dl>
+<p class="small text-muted">
+    Halaman ini terbuka otomatis setelah akun diverifikasi. Jika sudah lebih dari dua hari kerja,
+    hubungi unit kemahasiswaan atau PDLK kampus Anda.
+</p>
+<a href="{{ route('verification.notice') }}" class="btn btn-outline-primary w-100">Cek status</a>
 @endsection

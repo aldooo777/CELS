@@ -343,3 +343,90 @@ tr[data-href]:focus-visible { outline: 2px solid var(--cels-navbar); outline-off
 }
 .import-table td { white-space: nowrap; }
 .import-table td:last-child { white-space: normal; min-width: 220px; }
+
+/* =========================================================
+   Tampilan selaras dengan beranda (guest)
+   ========================================================= */
+
+/* ---------- Halaman masuk/daftar: pita navy seperti hero beranda ---------- */
+body.page-auth { background-color: var(--cels-bg-main); }
+.auth-hero {
+    background: radial-gradient(circle at 20% 20%, rgba(10, 124, 135, .45), transparent 55%),
+                radial-gradient(circle at 85% 80%, rgba(242, 140, 40, .18), transparent 50%),
+                var(--cels-primary);
+    color: #fff;
+    padding: 3.25rem 0 6.5rem;
+}
+.auth-title { font-size: 2.1rem; font-weight: 700; color: #fff; margin: .25rem 0 .75rem; }
+.auth-lead { color: #e2e8f0; max-width: 640px; margin: 0 auto; font-weight: 300; font-size: 1.05rem; }
+.auth-lead b { color: #fff; font-weight: 600; }
+.auth-body { margin-top: -4.5rem; padding-bottom: 4rem; position: relative; z-index: 3; }
+.auth-card {
+    background: #fff;
+    border: 1px solid var(--cels-border);
+    border-top: 4px solid var(--cels-navbar);
+    border-radius: var(--cels-border-radius);
+    box-shadow: 0 4px 14px rgba(15, 39, 71, .08);
+    padding: 2rem;
+}
+.auth-below { margin-top: 1.25rem; font-size: .92rem; line-height: 1.9; }
+@media (max-width: 576px) {
+    .auth-title { font-size: 1.6rem; }
+    .auth-card { padding: 1.25rem; }
+}
+
+/* Judul bagian dalam form (Data diri, Akun, Kampus, ...) */
+.form-section {
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--cels-secondary);
+    margin: 1.75rem 0 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--cels-border);
+}
+form > .form-section:first-of-type, .auth-card > .form-section:first-child { margin-top: 0; }
+
+/* ---------- Halaman dalam ---------- */
+main h3 { font-weight: 700; letter-spacing: -.015em; }
+
+/* Kartu statistik dashboard meniru kartu statistik beranda */
+.stat-card .card-body { text-align: center; padding: 1.5rem 1rem; }
+.stat-card .card-body > .bi { display: none; }                      /* tanpa ikon dekoratif */
+.stat-card .display-6 { font-size: 1.85rem; line-height: 1.2; margin-bottom: .25rem; }
+.stat-card .small,
+.stat-card .small a {
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: #556274 !important;
+    text-decoration: none;
+}
+.stat-card:hover { border-color: var(--cels-navbar); }
+
+/* Judul tabel navy seperti tabel perbandingan di beranda */
+.card { overflow: hidden; }
+main .table > thead > tr > th {
+    --bs-table-bg: var(--cels-primary);
+    --bs-table-color: #fff;
+    background-color: var(--cels-primary);
+    color: #fff;
+    font-weight: 600;
+    font-size: .85rem;
+    border-bottom: 0;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    white-space: nowrap;
+}
+
+/* Badge kotak seperti di beranda (bukan pil) */
+.badge, .badge.rounded-pill { border-radius: 4px !important; font-weight: 500; }
+
+/* Warna polos untuk avatar & kartu akun (tanpa gradasi) */
+.avatar-initials { background: var(--cels-navbar); }
+.account-card-header, .profile-summary-header {
+    background: var(--cels-primary);
+    border-bottom: 3px solid var(--cels-accent-stripe);
+}
